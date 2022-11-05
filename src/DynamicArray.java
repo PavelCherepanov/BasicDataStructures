@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class DynamicArray<E> implements Array<E> {
     private E array[];
     private int count;
@@ -5,16 +7,27 @@ public class DynamicArray<E> implements Array<E> {
     public DynamicArray(int length) {
         array = (E[]) new Object[length];
     }
-    //метод toArray
-//конструктор
-//
-    public DynamicArray(E[] array){
-        this.array = array.clone();
+
+    public DynamicArray(E[] array) {
+        this.array = array;
+        count = array.length;
     }
 
-//    public E[] toArray(){
-//        return ;
-//    }
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            str.append(array[i].toString() + " ");
+        }
+        return str.toString();
+    }
+
+    public E[] toArray(E[] array) {
+        if (array.length < 0 | array.length > count) {
+            throw new ArrayIndexOutOfBoundsException("Error. toArray outside the array");
+        }
+        System.arraycopy(this.array, 0, array, 0, count);
+        return array;
+    }
 
     public void printArray() {
         for (int i = 0; i < count; i++) {
@@ -37,16 +50,16 @@ public class DynamicArray<E> implements Array<E> {
     @Override
     public E get(int index) {
         E element = null;
-//        if(index >= count | index < 0){
-//            throw new ArrayIndexOutOfBoundsException("Error. Bad get");
-//        }
+        if (index >= count | index < 0) {
+            throw new ArrayIndexOutOfBoundsException("Error. Get outside the array");
+        }
         element = array[index];
         return element;
     }
 
     @Override
     public void remove(int index) {
-        if (count == 0 || index > count) {
+        if (count == 0 | index >= count) {
             throw new ArrayIndexOutOfBoundsException("Error. Remove outside the array");
         }
 
@@ -65,15 +78,13 @@ public class DynamicArray<E> implements Array<E> {
                 index = i;
                 break;
             } else {
-                throw new ArrayIndexOutOfBoundsException("Error. Index out");
+                return -1;
             }
         }
         return index;
     }
 
-    public int size(){
+    public int size() {
         return count;
     }
-
-
 }
